@@ -1,0 +1,59 @@
+name: Validate Skills Registry
+
+on:
+  pull_request:
+    paths:
+      - 'skills-registry/people/**'
+      - 'skills-registry/alumni/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed registry files
+        id: changed
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'skills-registry/people/*.md' 'skills-registry/alumni/*.md')
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Validate each file
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FAILED=0
+
+          while IFS= read -r FILE; do
+            [[ -z "$FILE" ]] && continue
+            echo "Validating $FILE..."
+
+            # Must have at least one markdown link
+            if ! grep -qE '\*\*[^*]+\*\*: https?://' "$FILE"; then
+              echo "::error file=$FILE::No links found. At least one link is required (format: **Label:** https://...)."
+              FAILED=1
+              continue
+            fi
+
+            # Check each GitHub link actually exists
+            while IFS= read -r URL; do
+              if [[ "$URL" =~ github\.com/([^/]+/[^/) ]+) ]]; then
+                REPO="${BASH_REMATCH[1]}"
+                STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+                  -H "Authorization: Bearer $GH_TOKEN" \
+                  -H "Accept: application/vnd.github+json" \
+                  "https://api.github.com/repos/$REPO")
+                if [[ "$STATUS" != "200" ]]; then
+                  echo "::error file=$FILE::Linked repo '$REPO' not found or not accessible (HTTP $STATUS)."
+                  FAILED=1
+                fi
+              fi
+            done < <(grep -oE 'https://github\.com/[^ )]+' "$FILE")
+
+          done <<< "${{ steps.changed.outputs.files }}"
+
+          exit $FAILED
