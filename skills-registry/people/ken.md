@@ -12,6 +12,13 @@ Claude Code skill for managing Gmail, Calendar, Drive, Docs, Slides, Sheets, and
 
 Scripts for measuring code quality metrics as git actions or independent scripts.
 
+---
+_Private Repos_
+
+**Prototype Proposal Skill:** https://github.com/stride-nyc/prototype-proposal-skill
+
+Claude Code skill for developing POC briefs and technical proposals for AI projects and novel integrations.
+
 ## Tools I Use
 
 **Beads:** https://github.com/gastownhall/beads
