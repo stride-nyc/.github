@@ -19,6 +19,18 @@ At least one link is required. PRs are automatically validated to confirm linked
 
 When someone leaves Stride, their file moves from `people/` to `alumni/` via a PR.
 
+## Plugin Marketplace
+
+In addition to the skills registry, we maintain a shared Claude Code plugin registry at [stride-nyc/stride-plugins-official](https://github.com/stride-nyc/stride-plugins-official). To add it in Claude Code:
+
+```sh
+/plugin marketplace add stride-nyc/stride-plugins-official
+```
+
+Browse available plugins with `/plugin > Discover` or install directly with `/plugin install <name>`.
+
+To add a plugin to the registry, open a PR in [stride-nyc/stride-plugins-official](https://github.com/stride-nyc/stride-plugins-official).
+
 ## Social Contract
 
 | Who | Owns |
