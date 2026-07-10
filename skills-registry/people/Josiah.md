@@ -1,5 +1,5 @@
 # Josiah
-This my [dot_files](https://github.com/B4Dmonkey/dotfiles) contain my skills. The skills im using now are
+This my [dot_files](https://github.com/B4Dmonkey/dotfiles) repo. It contain my skills. The skills im using now are
 - impl-scope to get a high level plan
 - impl-plan to get a task breakdown
 - impl-run to implement the plan
