@@ -1,5 +1,9 @@
 # Josiah
-This is my [retro skill](https://gist.github.com/B4Dmonkey/42573ccd3f5294f9319ec8ee76a87288). It reviews the previous session with the goal of continous improvement
+This my [dot_files](https://github.com/B4Dmonkey/dotfiles) contain my skills. The skills im using now are
+- impl-scope to get a high level plan
+- impl-plan to get a task breakdown
+- impl-run to implement the plan
+- retro to review the previous session with the goal of continous improvement
 
 # Tools I use
 This my minimum toolset for maximum productivity
