@@ -40,8 +40,9 @@ jobs:
             fi
 
             # Check each GitHub link actually exists
+            REPO_PATTERN='github\.com/([^/]+/[^/) ]+)'
             while IFS= read -r URL; do
-              if [[ "$URL" =~ github\.com/([^/]+/[^/) ]+) ]]; then
+              if [[ "$URL" =~ $REPO_PATTERN ]]; then
                 REPO="${BASH_REMATCH[1]}"
                 STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
                   -H "Authorization: Bearer $GH_TOKEN" \
