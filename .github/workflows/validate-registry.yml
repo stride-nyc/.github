@@ -32,16 +32,17 @@ jobs:
             [[ -z "$FILE" ]] && continue
             echo "Validating $FILE..."
 
-            # Must have at least one markdown link
-            if ! grep -qE '\*\*[^*]+\*\*: https?://' "$FILE"; then
-              echo "::error file=$FILE::No links found. At least one link is required (format: **Label:** https://...)."
+            # Must have at least one link: **Label:** https://... or [text](https://...)
+            if ! grep -qE '\*\*[^*]+\*\*: https?://|\]\(https?://' "$FILE"; then
+              echo "::error file=$FILE::No links found. At least one link is required (**Label:** https://... or [text](https://...))."
               FAILED=1
               continue
             fi
 
             # Check each GitHub link actually exists
+            REPO_PATTERN='github\.com/([^/]+/[^/) ]+)'
             while IFS= read -r URL; do
-              if [[ "$URL" =~ github\.com/([^/]+/[^/) ]+) ]]; then
+              if [[ "$URL" =~ $REPO_PATTERN ]]; then
                 REPO="${BASH_REMATCH[1]}"
                 STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
                   -H "Authorization: Bearer $GH_TOKEN" \
