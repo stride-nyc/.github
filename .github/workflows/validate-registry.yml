@@ -32,9 +32,9 @@ jobs:
             [[ -z "$FILE" ]] && continue
             echo "Validating $FILE..."
 
-            # Must have at least one markdown link
-            if ! grep -qE '\*\*[^*]+\*\*: https?://' "$FILE"; then
-              echo "::error file=$FILE::No links found. At least one link is required (format: **Label:** https://...)."
+            # Must have at least one link: **Label:** https://... or [text](https://...)
+            if ! grep -qE '\*\*[^*]+\*\*: https?://|\]\(https?://' "$FILE"; then
+              echo "::error file=$FILE::No links found. At least one link is required (**Label:** https://... or [text](https://...))."
               FAILED=1
               continue
             fi
